@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LogActivity;
+use App\Models\Parking;
 use App\Models\Petugas;
 use App\Models\Type;
 use App\Models\User;
@@ -15,9 +16,10 @@ class AdminController extends Controller
     public function index()
     {
         $petugas = Petugas::paginate(10);
+        $parkir = Parking::paginate(10);
         $activity = LogActivity::paginate(10);
         $type = Type::paginate(10);
-        return view('admin.index', compact('petugas', 'activity', 'type'));
+        return view('admin.index', compact('petugas', 'activity', 'type','parkir'));
     }
 
     public function petugasBaru(Request $request){
@@ -42,6 +44,14 @@ class AdminController extends Controller
         $this->createLog('admin buat petugas baru');
         return redirect()->route('admin.index')->with('success', 'berhasil login');
     }
+    public function petugasHapus($id){
+        $petugas = Petugas::where('id', $id)->first();
+        if(!$petugas) return redirect()->route('admin.index')->with('warning', 'data tidak tersedia');
+        User::where('name', $petugas->nama)->delete();
+        $petugas->delete();
+        $this->createLog('admin menghapus petugas');
+        return redirect()->route('admin.index')->with('success', 'berhasil login');
+    }
     public function typeBaru(Request $request){
         $request->validate([
             'nama'=>'required',
@@ -52,6 +62,23 @@ class AdminController extends Controller
         ];
         Type::create($data);
         $this->createLog('admin buat type baru');
+        return redirect()->route('admin.index')->with('success', 'berhasil login');
+    }
+    public function typeHapus($id){
+        $typ = Type::where('id', $id)->first();
+        if(!$typ) return redirect()->route('admin.index')->with('warning', 'data tidak tersedia');
+        $typ->delete();
+        $this->createLog('admin menghapus jenis');
+        return redirect()->route('admin.index')->with('success', 'berhasil login');
+    }
+    public function logHapus(){
+        LogActivity::truncate();
+        $this->createLog('admin menghapus semua data log');
+        return redirect()->route('admin.index')->with('success', 'berhasil login');
+    }
+    public function parkirHapus(){
+        Parking::truncate();
+        $this->createLog('admin menghapus semua data parkir');
         return redirect()->route('admin.index')->with('success', 'berhasil login');
     }
 

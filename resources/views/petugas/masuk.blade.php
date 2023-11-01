@@ -97,7 +97,13 @@
                           </label>
                         </div> --}}
                       </div>
-                      <input class="submit btn btn-primary col-md-12" type="submit" value="Submit" style="height: 40px" name="btn_masuk">
+                      @if ($sisaParkir == 0)
+                          <div class="col-md-12" style="padding-top: 10px">
+                           <div class="alert alert-danger">Kouta Parkir habis</div>
+                          </div>
+                      @else
+                        <input class="submit btn btn-primary col-md-12" type="submit" value="Submit" style="height: 40px" name="btn_masuk">
+                      @endif
                   </form>
                 </div>
               </div>
@@ -138,6 +144,7 @@
                 </tbody>
               </table>
               </div>
+              {{ $parkir->links('pagination::bootstrap-4') }}
               </div>
               </div>
             </div>

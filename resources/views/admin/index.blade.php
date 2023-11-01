@@ -125,10 +125,12 @@
                       <tr style="font-size: 12pt">
                         <td align="center">{{ $item->nama }}</td>
                         <td align="center">{{ $item->jabatan }}</td>
+                        <td align="center"><a href="{{ route('admin.delete-petugas', $item->id) }}">Hapus</a></td>
                       </tr>
                       @endforeach
                   </table>
                   </div>
+                  {{ $petugas->links('pagination::bootstrap-4') }}
                   </div>
                   </div>
 
@@ -143,20 +145,63 @@
                       <tr style="font-size: 12pt">
                         <td align="center">{{ $item->name }}</td>
                         <td align="center">{{ $item->desc }}</td>
+                        <td align="center"><a href="{{ route('admin.delete-type', $item->id) }}">Hapus</a></td>
                       </tr>
                       @endforeach
                   </table>
                   </div>
+                  {{ $type->links('pagination::bootstrap-4') }}
                   </div>
                   </div>
                 </div>
               <!-- end:Daftar Petugas Parkir --> 
 
               
-
-              <!-- Aktivitas Petugas Parkir -->
-              <form method="post">
+              <form method="post" action="{{ route('admin.delete-all-parkir') }}">
+                @csrf
               <div class="col-md-12 col-sm-12 col-x-12" style="margin-top: 30px;">
+                <div class="col-md-12 panel">
+                  <div class="col-md-12 panel-heading bg-dark-red">
+                    <h4 style="color: white;font-size: 20pt;">Aktivitas Parkir</h4>
+                  </div>
+                  <div class="panel-body">
+                  <div class="table-responsive col-md-12 col-sm-12 col-xs-12">
+                  <input class="submit btn btn-warning col-md-2" type="submit" style="height: 40px;margin-top: 20px;" value="Delete All" onclick="return confirm('Apakah Anda Yakin Menghapus Semuanya?')" name="btn_delete">
+                  <table class="table table-hover col-md-12 col-sm-12 col-xs-12" width="100%" cellspacing="0" style="margin-top: 5px;">
+                  <thead>
+                   <tr style="font-size: 13pt">
+                      <th>Petugas</th>
+                      <th>jenis</th>
+                      <th>Masuk</th>
+                      <th>keluar</th>
+                      <th>Jumlah Jam</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      @foreach ($parkir as $item)
+                      <tr style="font-size: 12pt">
+                          <td>{{ $item['username'] }}</td>
+                          <td>{{ $item['jenis'] }}</td>
+                          <td>{{ $item->masuk }}</td>
+                          <td>{{ $item->keluar }}</td>
+                          <td>{{ $item->hitung_jam_masuk }} jam</td>
+                          <td class="bg-{{ $item->status == 1 ? 'success' : 'danger' }}">{{ $item->status_parkir }}</td>
+                        </tr>
+                      @endforeach
+                  </tbody>
+                </table>
+                </div>
+
+                {{ $parkir->links('pagination::bootstrap-4') }}
+                </div>
+                </div>
+              </div>
+              </form>
+              <!-- Aktivitas Petugas Parkir -->
+              <form method="post" action="{{ route('admin.delete-all-log') }}">
+                @csrf
+                <div class="col-md-12 col-sm-12 col-x-12" style="margin-top: 30px;">
                   <div class="col-md-12 panel">
                     <div class="col-md-12 panel-heading bg-dark-red">
                       <h4 style="color: white;font-size: 20pt;">Aktivitas Petugas</h4>
@@ -183,6 +228,8 @@
                     </tbody>
                   </table>
                   </div>
+
+                  {{ $activity->links('pagination::bootstrap-4') }}
                   </div>
                   </div>
                 </div>

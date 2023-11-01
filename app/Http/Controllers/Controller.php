@@ -12,6 +12,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
+    public $limitParkir = 10;
     public function createLog($keterangan){
         $data = [
             'user_id' => auth()->user()->id,

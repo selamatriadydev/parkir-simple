@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,6 +23,15 @@ class Parking extends Model
     }
     public function getJenisAttribute(){
         return $this->type->name ?? '';
+    }
+    public function getMasukAttribute(){
+        return Carbon::parse($this->jam_masuk)->format('d-m-Y H:i');
+    }
+    public function getKeluarAttribute(){
+        return Carbon::parse($this->jam_keluar)->format('d-m-Y H:i');
+    }
+    public function getStatusParkirAttribute(){
+        return $this->status == 1 ? 'Parkir' : 'Keluar';
     }
 
 }
